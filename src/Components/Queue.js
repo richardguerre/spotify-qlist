@@ -1,5 +1,5 @@
 import React from 'react'
-import Song from './Song.js'
+import Song from './Song'
 
 export default function Queue({queue}) {
     return (
