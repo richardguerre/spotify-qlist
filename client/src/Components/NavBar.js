@@ -14,7 +14,7 @@ export default function NavBar() {
                 <div></div>}
             {loggedIn ?
                 <div></div> :
-                <a href="http://localhost:3000/login">Login</a>}
+                <a href="http://localhost:8888/login">Login</a>}
         </nav>
     )
 }

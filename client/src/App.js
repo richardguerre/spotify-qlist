@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 //Component imports
 import NavBar from './Components/NavBar';
+import CreatePage from './Pages/CreatePage';
 import QueuePage from './Pages/QueuePage';
 import IndexPage from './Pages/IndexPage';
 import AboutPage from './Pages/AboutPage';
@@ -12,7 +13,7 @@ import AboutPage from './Pages/AboutPage';
 
 //Misc. imports
 import './App.css';
- 
+
 function App() {
   return (
     <div className="App">
@@ -20,6 +21,7 @@ function App() {
         <NavBar />
         <Switch>
           <Route path="/" exact component={IndexPage}></Route>
+          <Route path="/create" component={CreatePage}></Route>
           <Route path="/queue" component={QueuePage}></Route>
           <Route path="/about" component={AboutPage}></Route>
         </Switch>
