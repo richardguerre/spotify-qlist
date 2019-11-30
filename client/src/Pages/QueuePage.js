@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import Queue from '../Components/Queue';
 import NowPlaying from '../Components/NowPlaying';
+import AddToQueue from '../Components/AddToQueue';
 
 export default function QueuePage() {
 
@@ -44,8 +45,7 @@ export default function QueuePage() {
     return (
         <div className="QueuePage">
             <NowPlaying />
-            <input type="text" onChange={handleChange} placeholder="Add a song!" />
-            <button>Add</button>
+            <AddToQueue token={token} />
             <Queue queue={fakeQueue}/>
             {/* QR code to be added */}
         </div>
