@@ -1,31 +1,36 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { createStore, useStore } from 'react-hookstore';
+import Spotify from 'spotify-web-api-js';
 
-createStore('resultsStore', 0);
+createStore('resultsStore',0)
 const SPOTIFY_API_BASE = 'https://api.spotify.com/v1';
 
-export default function AddToQueue(props)
-{
+function AddToQueue(props){
+  const [appStore] = useStore('appStore');
+  const spotifyApi = new Spotify();
+  spotifyApi.setAccessToken(appStore.accessToken);
   const token = props.token;
-
   const [results, setResults] = useStore('resultsStore');
-
   const placeholder = "Add to queue";
+
+  spotifyApi.searchTracks('Love')
+    .then(function(data) {
+      console.log('Search by "Love"', data);
+    }, function(err) {
+      console.error(err);
+    });
 
   function handleChange(e)
   {
-    if (e.target.value !== '')
-    {
+    if (e.target.value !== ''){
       searchTracks(e.target.value);
-    } else
-    {
+    } else{
       setResults([]);
     }
   }
 
   async function searchTracks(query)
   {
-
     fetch(`${SPOTIFY_API_BASE}/search?q=${encodeURIComponent(query)}&type=track&limit=10`, {
       headers: {
         Authorization: 'Bearer ' + token
@@ -96,10 +101,11 @@ function ResultsList()
                 <div>{r.artists[0].name}</div>
               </div>
             </div>
-            <button>Add</button>
           </li>
         );
       })}
     </ul>
   );
 }
+
+export default AddToQueue;

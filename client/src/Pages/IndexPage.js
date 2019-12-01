@@ -1,21 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useStore } from 'react-hookstore';
 
 export default function IndexPage(){
-
-    let url = window.location.toString();
-    let accessTokenIdx = url.indexOf('access_token');
-    let token = url.substring(accessTokenIdx);
-    token = token.replace('access_token=', '');
-
-    return (
-      <div className="IndexPage">
-        <h1>Welcome qLister!</h1>
-        <p>Please choose between creating a qList party or joining one!</p>
-        <a href={"http://localhost:8888/login"}><h2>Create</h2></a>
-        <Link to={`/queue/?access_token=${token}`}>
-          <h2>Join</h2>
-        </Link>
-      </div>
-    )
+  const [ appStore ] = useStore('appStore')
+  console.log(appStore)
+  return (
+    <div className="IndexPage">
+      <h1>Welcome qLister!</h1>
+      <p>Please choose between creating a qList party or joining one!</p>
+      { appStore.isLoggedIn 
+        ? ( appStore.partyName ? <Link to={'/create'}><h2>Change</h2></Link> : <Link to={'/create'}><h2>Create</h2></Link>) 
+        : <a href="http://localhost:8888/login"><h2>Login</h2></a>}
+      <Link to={`/queue/${appStore.partyName}`}><h2>Join</h2></Link>
+    </div>
+  )
 }
