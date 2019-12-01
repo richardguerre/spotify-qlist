@@ -20,21 +20,12 @@ export default function initStore () {
       userName : undefined,
       partyName : undefined,
       nowPlaying : {
-        trackName : undefined,
-        artists : [],
-        albumImage : undefined,
-        length : 0 
+        isPlaying : false
       },
-      joiner : [],
-      queue : [
-        {
-          id: 1,
-          name: "Despacito",
-          author: "Luis Fonsi",
-          playing: false,
-          votes: 0
-        }
-      ]
+      queue : [],
+      queueSize : 0,
+      deviceId : undefined,
+      hasQueue : false
     }
   )
 }

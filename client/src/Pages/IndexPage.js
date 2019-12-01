@@ -4,7 +4,7 @@ import { useStore } from 'react-hookstore';
 
 export default function IndexPage(){
   const [ appStore ] = useStore('appStore')
-  console.log(appStore)
+  
   return (
     <div className="IndexPage">
       <h1>Welcome qLister!</h1>

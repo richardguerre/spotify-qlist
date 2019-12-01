@@ -18,15 +18,6 @@ import './App.css';
 
 function App() {
   initStore(); //initialize global state/store
-  // const spotifyApi = new Spotify()
-  // const [ appStore, setStore ] = useStore('appStore')
-  
-  // if(appStore.accessToken){
-  //   spotifyApi.setAccessToken(appStore.accessToken);
-
-  //   spotifyApi.getMe()
-  //     .then((data) => setStore({...appStore, userName: data.display_name}), (err) => console.error("error: could not get user's info"))    
-  // }
 
   return (
     <div className="App">
