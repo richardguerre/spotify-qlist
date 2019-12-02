@@ -93,11 +93,10 @@ function AddToQueue(props)
 function Result({track, added}) {
   const [ appStore, setStore ] = useStore('appStore');
   const [ results, setResults ] = useStore('resultsStore');
-  console.log(track);
   const song = {
     id: track.id,
     name: track.name,
-    artists: [track.artists.map( (artist) => artist.name)],
+    artists: track.artists.map( (artist) => artist.name),
     images: track.album.images.map( (image) => image.url),
     playUrl : track.external_urls.spotify,
     votes: 0,
