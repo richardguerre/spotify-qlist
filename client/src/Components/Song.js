@@ -37,7 +37,7 @@ export default function Song({song}) {
             <label>
     <button onClick={handleUpVote}>upVote {song.votes}</button>
                     {song.name} <span> </span>
-                    {song.artists.join()}
+                    {song.artists.join(', ')}
             </label>
         </div>
     )

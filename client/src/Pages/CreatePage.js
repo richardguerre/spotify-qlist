@@ -17,11 +17,25 @@ export default function CreatePage() {
             setDevices([...response.devices]);
         });
     }
+    useEffect(() => fetchDevices(), []);
     
     const input_party = useRef(null);
 
     const handleSubmit = () => {
-        setStore({...appStore, partyName : input_party.current.value })
+        const radio = document.getElementsByName("devices");
+        let device_id;
+        if (radio)
+        {
+            for (let i = 0; i < radio.length; ++i)
+            {
+                const device = radio[i];
+                if (device.checked)
+                {
+                    device_id = device.value;
+                }
+            }
+        }
+        setStore({...appStore, partyName : input_party.current.value, deviceId : device_id })
     }
     
     return (
@@ -35,7 +49,6 @@ export default function CreatePage() {
             <p>or open spotify on one of your devices</p>
             <button name="Fetch devices" onClick={fetchDevices}>Fetch Devices</button>
             {devices && <Devices /> }
-            {/* {console.log(devices)} */}
             <Link to={`/queue/${appStore.partyName}`}><input type="submit" value="Submit" onClick={handleSubmit}/></Link>
         </>
     )
@@ -46,17 +59,21 @@ function Devices()
     const [ devices ] = useStore('devices');
     const [ appStore, setStore ] = useStore('appStore');
     
-    const handleSelectDevice = (device_id) => {
-        setStore({...appStore, deviceId : device_id});
-    };
-
     return (
         <>
-            <ul>
-                {devices.map((device) => {
-                    return <li key={device.id} onClick={() => handleSelectDevice(device.id)}>{device.name}</li>
-                })}
-            </ul>
+            <fieldset>
+                <legend>Select Device</legend>
+                <ul>
+                    {devices.map((device) => {
+                        return (
+                            <li key={device.id}>
+                                <label htmlFor={device.name}>{device.name}</label>
+                                <input type="radio" id={device.name} name="devices" value={device.id}></input>
+                            </li>
+                        )
+                    })}
+                </ul>
+            </fieldset>
         </>
     );
 }

@@ -31,12 +31,12 @@ export default function NowPlaying() {
         <div className="NowPlaying">
             {appStore.hasQueue ?
             <div>
-                <img src={appStore.nowPlaying.image.toString()} alt="image not showing"/>
-                <div>
-                    {appStore.nowPlaying.name}
-                    <br/>
-                    {" by "}{appStore.nowPlaying.artists}
-                </div>
+                <img src={appStore.nowPlaying.image.toString()} alt="Track Image"/>
+                    <div>
+                        {appStore.nowPlaying.name}
+                        <br/>
+                        {" by "}{Array.from(appStore.nowPlaying.artist).join(', ')}
+                    </div>
                 <button onClick={() => playTrack()}>Play</button>
                 <a href={appStore.nowPlaying.playUrl} target="_blank"><button>Go to Spotify</button></a>
             </div>    
