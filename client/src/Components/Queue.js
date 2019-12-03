@@ -1,10 +1,13 @@
-import React from 'react'
+import React from 'react';
+import { useStore } from 'react-hookstore';
+
 import Song from './Song'
 
-function Queue({queue}) {
+function Queue() {
+    const [ appStore ] = useStore('appStore')
 
     return (
-        queue.map(track => {
+        appStore.queue.map(track => {
             return <Song key={track.id} song={track}/> 
         })
     )

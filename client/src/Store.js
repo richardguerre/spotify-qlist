@@ -18,6 +18,7 @@ export default function initStore () {
       accessToken : params.access_token,
       isLoggedIn : params.access_token ? true : false,
       userName : undefined,
+      userId : undefined,
       partyName : undefined,
       nowPlaying : {
         isPlaying : false

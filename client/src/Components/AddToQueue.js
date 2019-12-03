@@ -4,11 +4,11 @@ import Spotify from 'spotify-web-api-js';
 
 createStore('resultsStore',0)
 
-function AddToQueue(props)
-{
+function AddToQueue(){
   const [appStore] = useStore('appStore');
   const spotifyApi = new Spotify();
   spotifyApi.setAccessToken(appStore.accessToken);
+  
   const [results, setResults] = useStore('resultsStore');
   const placeholder = "Add to queue";
   

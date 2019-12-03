@@ -9,7 +9,7 @@ export default function NowPlaying() {
     spotifyApi.setAccessToken(appStore.accessToken);
 
     const playTrack = () => {
-        spotifyApi.transferMyPlayback([appStore.deviceId])
+        spotifyApi.transferMyPlayback([appStore.deviceId]) // this needs to be put in createPage.js
         .then( (err, res) => err ? console.log(err) : console.log(res))
         spotifyApi.play()
         .then( (err, res) => err ? console.log(err) : console.log(res))
@@ -35,7 +35,7 @@ export default function NowPlaying() {
                     <div>
                         {appStore.nowPlaying.name}
                         <br/>
-                        {" by "}{Array.from(appStore.nowPlaying.artist).join(', ')}
+                        {"by "}{Array.from(appStore.nowPlaying.artist).join(', ')}
                     </div>
                 <button onClick={() => playTrack()}>Play</button>
                 <a href={appStore.nowPlaying.playUrl} target="_blank"><button>Go to Spotify</button></a>
