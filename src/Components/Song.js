@@ -1,11 +1,14 @@
-import React from 'react'
+import React from 'react';
 import { useStore } from 'react-hookstore';
+import Spotify from 'spotify-web-api-js';
 
 export default function Song({song}) {
 
     const [appStore, setStore] = useStore('appStore');
+    const [playlist, setPlaylist] = useStore('playlist');
+    const spotifyApi = new Spotify();
     
-    const handleUpVote = (e) => {
+    const handleUpVote = (song) => {
         setStore({
             ...appStore, 
             queue : [ 
@@ -17,6 +20,17 @@ export default function Song({song}) {
             ]
         })
 
+        
+        // let currentIndex = appStore.queue.indexOf(song);
+        // let oldIndex = currentIndex;
+        // let prevSong = appStore.queue[currentIndex - 1];
+        
+        // while (currentIndex - 1 > 0 && prevSong.votes < song.votes)
+        // {
+        //     prevSong = appStore.queue[currentIndex - 1];
+        //     --currentIndex;
+        // }
+        
         setStore({ 
             ...appStore, 
             queue : [
@@ -30,13 +44,20 @@ export default function Song({song}) {
                 })
             ]
         }) 
+
+    }
+
+    const handleReorder = () => {
+        spotifyApi.reorderTracksInPlaylist(playlist.id, 1, 0)
+            .then( (err, res) => err?console.log(err):console.log(res))
     }
     
     return (
         <div>
             <label>
-                <button onClick={handleUpVote}>upVote {song.votes}</button>
+                <button onClick={() => handleUpVote(song)}>upVote {song.votes}</button>
                 {song.name}{' by '}{song.artists.join(', ')}
+                <button onClick={handleReorder}>Reorder</button>
             </label>
         </div>
     )

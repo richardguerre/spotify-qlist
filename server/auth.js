@@ -13,7 +13,7 @@ var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
-const config = require('../auth-config')
+const config = require('./auth-config')
 
 var client_id = process.env.CLIENT_ID || config.CLIENT_ID; // Your client id
 var client_secret = process.env.CLIENT_SECRET || config.CLIENT_SECRET; // Your secret

@@ -93,6 +93,7 @@ function AddToQueue(){
 function Result({track, added}) {
   const [ appStore, setStore ] = useStore('appStore');
   const [ results, setResults ] = useStore('resultsStore');
+  const [ playlist ] = useStore('playlist');
   const song = {
     id: track.id,
     name: track.name,
@@ -101,12 +102,17 @@ function Result({track, added}) {
     playUrl : track.external_urls.spotify,
     votes: 0,
   }
+  const spotifyApi = new Spotify();
   
   const handleAdd = (e) =>
   {
     setStore({...appStore, queue : [...appStore.queue, song], hasQueue : true });
     setResults([]);
     added();
+    spotifyApi.addTracksToPlaylist(playlist.id, [track.uri])
+      .then( (err, res) => {
+        err?console.log(err):console.log(res)
+      });
   }
 
   return (
