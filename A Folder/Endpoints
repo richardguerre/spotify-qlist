@@ -2,21 +2,24 @@
   Creator : 
     'create-party' : 
       emit: creates storage for new list, storing access token, partyName, etc...
+      {
+        partyName : string,
+        accessToken : string
+      }
   
   Joiner :
     'join-party' : 
       emit : send partyName and ask backend to put socket into socket.room(partyName)
       on : get current party with accessTocken and all require front-end stuff for joiner
     'add-song' :
-      emit : 
+      emit : {spotifyTrackObject}
     'up-vote' :
       emit : send song.id
     'update' :
-      on : setStore(partyName)
+      on : setStore(obj)
 
 ### Backend:
-  'connect' :
-  'disconnect' : 
+  'disconnect' : if party is finished
 
   Creator : 
     'create-party' :
@@ -24,8 +27,8 @@
   
   Joiner :
     'join-party' :
-      on : socket.id.join(partyName)
-      id.emit : send back party list with acess tokens and all..
+      on : socket.join(partyName)
+      in(partyName).emit : send back party list with access tokens and all..
     'add-song' :
       on : add song to party list
     'up-vote' :

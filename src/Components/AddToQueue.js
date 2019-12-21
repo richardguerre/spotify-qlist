@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import { createStore, useStore } from 'react-hookstore';
 import Spotify from 'spotify-web-api-js';
+import io from 'socket.io-client';
 
 createStore('resultsStore',0)
 
@@ -91,8 +92,10 @@ function AddToQueue(){
 }
 
 function Result({track, added}) {
+  const socket = io('http://localhost:8888/');
   const [ appStore, setStore ] = useStore('appStore');
   const [ results, setResults ] = useStore('resultsStore');
+  const [ party ] = useStore('appStore2');
   const [ playlist ] = useStore('playlist');
   const song = {
     id: track.id,
@@ -113,6 +116,8 @@ function Result({track, added}) {
       .then( (err, res) => {
         err?console.log(err):console.log(res)
       });
+
+    socket.emit('add-song', party);
   }
 
   return (

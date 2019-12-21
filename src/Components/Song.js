@@ -1,9 +1,11 @@
 import React from 'react';
 import { useStore } from 'react-hookstore';
 import Spotify from 'spotify-web-api-js';
+import io from 'socket.io-client'
 
 export default function Song({song}) {
 
+    const socket = io('http://localhost:8888');
     const [appStore, setStore] = useStore('appStore');
     const [playlist, setPlaylist] = useStore('playlist');
     const spotifyApi = new Spotify();
@@ -43,7 +45,9 @@ export default function Song({song}) {
                         return -1;
                 })
             ]
-        }) 
+        })
+
+        socket.emit('up-vote', song.id);
 
     }
 

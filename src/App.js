@@ -3,7 +3,6 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 //Component imports
-import initStore from './Store';
 import NavBar from './Components/NavBar';
 import CreatePage from './Pages/CreatePage';
 import QueuePage from './Pages/QueuePage';
@@ -12,6 +11,7 @@ import AboutPage from './Pages/AboutPage';
 
 //Misc. imports
 import './App.css';
+import initStore from './Store';
 
 function App() {
   initStore(); //initialize global store
@@ -23,7 +23,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={IndexPage}></Route>
           <Route path="/create" component={CreatePage}></Route>
-          <Route path="/queue" component={QueuePage}></Route>
+          <Route path="/queue/:partyName" component={QueuePage}></Route>
           <Route path="/about" component={AboutPage}></Route>
         </Switch>
       </Router>
