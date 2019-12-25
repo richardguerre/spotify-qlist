@@ -23,7 +23,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={IndexPage}></Route>
           <Route path="/create" component={CreatePage}></Route>
-          <Route path="/queue/:partyName" component={QueuePage}></Route>
+          <Route path="/party/:partyName" component={QueuePage}></Route>
           <Route path="/about" component={AboutPage}></Route>
         </Switch>
       </Router>

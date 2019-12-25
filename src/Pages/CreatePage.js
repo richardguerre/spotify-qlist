@@ -74,7 +74,7 @@ export default function CreatePage() {
 			<p>or open spotify on one of your devices</p>
 			<button name="Fetch devices" onClick={fetchDevices}>Fetch Devices</button>
 			{devices && <Devices /> }
-			<Link to={`/queue/${appStore.partyName}`}><input type="submit" value="Submit" onClick={handleSubmit}/></Link>
+			<Link to={`/party/${appStore.partyName}`}><input type="submit" value="Submit" onClick={handleSubmit}/></Link>
 		</>
 	)
 }

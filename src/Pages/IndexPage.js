@@ -12,7 +12,7 @@ export default function IndexPage(){
       { appStore.isLoggedIn 
         ? ( appStore.partyName ? <Link to={'/create'}><h2>Change</h2></Link> : <Link to={'/create'}><h2>Create</h2></Link>) 
         : <a href="http://localhost:8888/login"><h2>Login</h2></a>}
-      <Link to={`/queue/${appStore.partyName}`} ><h2>Join</h2></Link>
+      <Link to={`/party/${appStore.partyName}`} ><h2>Join</h2></Link>
     </div>
   )
 }

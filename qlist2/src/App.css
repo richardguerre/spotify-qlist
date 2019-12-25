@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-family: Futura;
+}
+
+.App {
+  height: 90vh;
+}
+
+nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 10vh;
+  background: rgb(40, 40, 40);
+  color: white;
+}
+
+nav a {
+  Background: rgb(40, 40, 40);
+  color: white;
+  text-decoration: none;
+}
+
+.IndexPage {
+  height: 100%;
+  background: rgb(87,181,96);
+  color: white;
+}
+.IndexPage h1 {font-size: 7vh; padding-top: 7vh;}
+.IndexPage h2 {font-size: 8.5vh; margin: 5vh; padding: 3vh; border-bottom-style: solid;}
+
+.NowPlaying {
+  display: flex;
+  color : white;
+  background: rgb(18, 18, 18);
+  padding : 20px 40px;
+}
+
+.NowPlaying img {
+  max-height: 25vh;
+}
+
