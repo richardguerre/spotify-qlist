@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useStore } from 'react-hookstore';
 import spotifyApi from 'spotify-web-api-js';
 
+
 export default function AddToQueue() {
   //stores and states
   const [ userInfo ] = useStore('userInfo');
@@ -11,7 +12,6 @@ export default function AddToQueue() {
   const { socket } = userInfo;
   const spotify = new spotifyApi();
   spotify.setAccessToken(userInfo.accessToken);
-  
   
   useEffect( () => {
     if(text !== ''){
@@ -26,10 +26,9 @@ export default function AddToQueue() {
   
   const handleAdd = (e, track) => {
     e.preventDefault();
-    console.log(track);
-    socket.emit('add-song', { partyName : userInfo.partyName , song : { ...track, votes : 0, status : 'wannabe' }})
     setText('');
     setResults([]);
+    socket.emit('add-song', { partyName : userInfo.partyName , song : { ...track, votes : 0, status : 'wannabe' }})
   }
 
   return (

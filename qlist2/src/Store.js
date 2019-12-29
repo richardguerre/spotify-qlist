@@ -1,5 +1,5 @@
 import { createStore } from 'react-hookstore';
-import io from 'socket.io-client';
+import io from 'socket.io-client'
 
 export default function initStore() {
   

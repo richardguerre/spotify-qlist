@@ -36,28 +36,21 @@ export default function CreatePage() {
 		axios.post('/api/create', { partyName : partyName, privateToken : params.access_token})
 			.then((res1) => { //{data: {partyName : '...', albumCover : '...'}}
 				console.log(res1)
-  			spotify.getMe()
-					.then( res2 => {
-						console.log(res2)
-						spotify.createPlaylist(res2.id, {
-							"name" : "qList - " + res1.data.partyName,
-							"public" : true,
-							"description" : "Playlist created from qList",
-						})
-						.then( (res3) => {
-							console.log(res3)
-							spotify.uploadCustomPlaylistCoverImage(res3.id, res1.data.albumCover)
-								.then( (res4) => console.log('qList album cover uploaded', res4))
-								.catch( (err) => console.log('could not set playlist image', err))
-						}).catch( (err) => console.log('could not set playlist image', err))
-					}).catch( (err) => console.log('could not set playlist image', err))
-				
+				spotify.uploadCustomPlaylistCoverImage(res1.data.playlistId, res1.data.albumCover)
+					.then( (res2) => {
+						console.log('qList album cover uploaded', res2)
+						window.location.href = `/party/${partyName}`
+					})
+					.catch( (err) => {
+						console.log('could not uploadCoverImage', err)
+						window.location.href = `/party/${partyName}`
+					})
+
 				setUser({
 					...userInfo,
 					partyName : res1.data.partyName,
 				})
 				setName('');
-				window.location.href = `/party/${partyName}`
 			})
 			.catch(err => { setName(''); console.log(err); })
 	}
