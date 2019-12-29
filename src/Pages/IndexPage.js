@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useStore } from 'react-hookstore';
 
-export default function IndexPage(){
-  const [ appStore ] = useStore('appStore')
+export default function IndexPage() {
+  const [ name, setName ] = useState('');
+
+  /*
+    Join component should be the only thing in the middle 
+    Create link should be in a corner, most users will not be creating but joining parties
+    Good example of this layout can be found on http://kahoot.it
+  */
   
   return (
-    <div className="IndexPage">
-      <h1>Welcome qLister!</h1>
-      <p>Please choose between creating a qList party or joining one!</p>
-      { appStore.isLoggedIn 
-        ? ( appStore.partyName ? <Link to={'/create'}><h2>Change</h2></Link> : <Link to={'/create'}><h2>Create</h2></Link>) 
-        : <a href="http://localhost:8888/login"><h2>Login</h2></a>}
-      <Link to={`/party/${appStore.partyName}`} ><h2>Join</h2></Link>
+    <div>
+      <h1>qList</h1>
+      <br/><br/><br/><br/>
+      <a href="http://localhost:8080/api/login">Create</a>
+      <br/><br/>
+      <input type="text" onChange={(e) => setName(e.target.value)} value={name} placeholder="Party Name"/>
+      <br/>
+      <Link to={`/party/${name}`}>Join</Link>
     </div>
   )
 }

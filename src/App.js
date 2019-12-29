@@ -1,34 +1,30 @@
-//Libraries and Packages import
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-//Component imports
-import NavBar from './Components/NavBar';
-import CreatePage from './Pages/CreatePage';
+// import NavBar from './Components/NavBar';
+import CreatePage from './Pages/CreatePage.js';
 import QueuePage from './Pages/QueuePage';
 import IndexPage from './Pages/IndexPage';
-import AboutPage from './Pages/AboutPage';
+import NotFoundPage from './Pages/NotFoundPage';
 
-//Misc. imports
 import './App.css';
 import initStore from './Store';
 
 function App() {
-  initStore(); //initialize global store
-
-  return (
-    <div className="App">
-      <Router>
-        <NavBar />
-        <Switch>
-          <Route path="/" exact component={IndexPage}></Route>
-          <Route path="/create" component={CreatePage}></Route>
-          <Route path="/party/:partyName" component={QueuePage}></Route>
-          <Route path="/about" component={AboutPage}></Route>
-        </Switch>
-      </Router>
-    </div>
-  )
+	initStore();
+	
+	return (
+		<div className="App">
+			<Router>
+				<Switch>
+					<Route path="/" exact component={IndexPage}/>
+					<Route path="/create" component={CreatePage}/>
+					<Route path="/party/:partyName" component={QueuePage}/>
+					<Route path="/not-found" component={NotFoundPage}/>
+				</Switch>
+			</Router>
+		</div>
+	);
 }
 
 export default App;

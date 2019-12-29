@@ -1,104 +1,82 @@
-import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { createStore, useStore } from 'react-hookstore';
-import Spotify from 'spotify-web-api-js';
-import io from 'socket.io-client';
+//import libraries
+import React, { useState } from 'react';
+import { useStore } from 'react-hookstore';
+import spotifyApi from 'spotify-web-api-js';
+import axios from 'axios';
 
-import albumCover from '../static/albumCover'
+//import user components
 
-createStore('devices', []);
-createStore('playlist', {})
+//import misc.
 
-export default function CreatePage() {
-	const [ appStore, setStore ] = useStore('appStore');
-	const [ devices, setDevices ] = useStore('devices');
-	const [ playlist, setPlaylist ] = useStore('playlist')
-	const spotifyApi = new Spotify();
-	spotifyApi.setAccessToken(appStore.accessToken);
-
-
-	const fetchDevices = () => {
-		spotifyApi.getMyDevices()
-		.then(({devices}) => {
-			setDevices([...devices]);
-		});
+//Misc. variables and functions
+const getHashParams = () => {
+	var hashParams = {};
+	var e, r = /([^&;=]+)=?([^&;]*)/g,
+			q = window.location.hash.substring(1);
+	// eslint-disable-next-line	
+	while ( e = r.exec(q)) {
+	hashParams[e[1]] = decodeURIComponent(e[2]);
 	}
-	
-	const input_party = useRef(null);
-
-	const handleSubmit = () => {
-		const radio = document.getElementsByName("devices");
-		let device_id;
-		if (radio){
-			for (let i = 0; i < radio.length; ++i){
-				const device = radio[i];
-				if (device.checked){
-					device_id = device.value;
-				}
-			}
-		}
-		setStore({
-			...appStore, 
-			partyName : input_party.current.value, 
-			deviceId : device_id 
-		})
-
-		// create playlist on user's spotify account
-		spotifyApi.createPlaylist(appStore.userId, {
-			"name" : "qList - " + input_party.current.value,
-			"public" : true,
-			"description" : "Playlist created from qList",
-		})
-		.then( (res) => {
-			setPlaylist(res)
-			spotifyApi.uploadCustomPlaylistCoverImage(res.id, albumCover)
-				.then( (err, res) => err?console.log(err):console.log(res) ) // still need to find callbacks
-		})
-
-		const party = {
-			partyName : input_party.current.value,
-			accessToken : appStore.accessToken
-		}
-		const socket = io('http://localhost:8888/');
-		socket.emit('create-party', party);
-	}
-	
-	return (
-		<>
-			<label>
-				{"Party Name: "}
-				<input type="text" ref={input_party} name="name" placeholder="I got friends" value={appStore.partyName}/>
-			</label>
-			<p>Try opening the spotify web player</p>
-			<a href="http://open.spotify.com/" target="_blank">Web Player</a>
-			<p>or open spotify on one of your devices</p>
-			<button name="Fetch devices" onClick={fetchDevices}>Fetch Devices</button>
-			{devices && <Devices /> }
-			<Link to={`/party/${appStore.partyName}`}><input type="submit" value="Submit" onClick={handleSubmit}/></Link>
-		</>
-	)
+	return hashParams;
 }
 
-function Devices()
-{
-	const [ devices ] = useStore('devices');
-	const [ appStore, setStore ] = useStore('appStore');
+export default function CreatePage() {
+	//stores and states
+	const [ userInfo, setUser ] = useStore('userInfo')
+	const [ partyName, setName ] = useState('');
+
+	//other miscellaneous
+	const params = getHashParams();
+	const spotify = new spotifyApi();
+	spotify.setAccessToken(params.access_token);
 	
+	//Handle event listeners
+	const handleSubmit = (e) => {
+		e.preventDefault(); //prevents page from reloading
+		axios.post('/api/create', { partyName : partyName, privateToken : params.access_token})
+			.then((res1) => { //{data: {partyName : '...', albumCover : '...'}}
+				console.log(res1)
+				spotify.uploadCustomPlaylistCoverImage(res1.data.playlistId, res1.data.albumCover)
+					.then( (res2) => {
+						console.log('qList album cover uploaded', res2)
+						window.location.href = `/party/${partyName}`
+					})
+					.catch( (err) => {
+						console.log('could not uploadCoverImage', err)
+						window.location.href = `/party/${partyName}`
+					})
+
+				setUser({
+					...userInfo,
+					partyName : res1.data.partyName,
+				})
+				setName('');
+			})
+			.catch(err => { setName(''); console.log(err); })
+	}
+
 	return (
 		<>
-			<fieldset>
-				<legend>Select Device</legend>
-				<ul>
-					{devices.map((device) => {
-						return (
-							<li key={device.id}>
-								<input type="radio" id={device.name} name="devices" value={device.id}></input>
-								<label htmlFor={device.name}>{device.name}</label>
-							</li>
-						)
-					})}
-				</ul>
-			</fieldset>
+			<h1>
+				CREATE
+			</h1>
+			<form onSubmit={handleSubmit}>
+				Party name : <input name="room" type="text" onChange={e => setName(e.target.value)} value={partyName} required/>
+				<input type="submit" value="create"/>
+			</form>
+			<div>
+				<br/>
+				<h4>How to create and play your party:</h4>
+				<br/>Lorem Ipsum...
+				<br/>
+				{partyName && 
+					<>
+						<h5>Share your party</h5>
+						<img src={`https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=http://localhost:3000/party/${partyName}&choe=UTF-8`} alt="qList QR code"/>
+						<br/>
+						<a href={`https://chart.googleapis.com/chart?cht=qr&chs=400x400&chl=http://localhost:3000/party/${partyName}&choe=UTF-8`} download={`qList - ${partyName}`}>Download QR code</a>
+					</>}
+			</div>
 		</>
-	);
+	)
 }

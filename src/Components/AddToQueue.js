@@ -1,138 +1,52 @@
-import React, { useRef } from 'react'
-import { createStore, useStore } from 'react-hookstore';
-import Spotify from 'spotify-web-api-js';
-import io from 'socket.io-client';
+import React, { useState, useEffect } from 'react';
+import { useStore } from 'react-hookstore';
+import spotifyApi from 'spotify-web-api-js';
 
-createStore('resultsStore',0)
 
-function AddToQueue(){
-  const [appStore] = useStore('appStore');
-  const spotifyApi = new Spotify();
-  spotifyApi.setAccessToken(appStore.accessToken);
+export default function AddToQueue() {
+  //stores and states
+  const [ userInfo ] = useStore('userInfo');
+  const [ text, setText ] = useState('');
+  const [ results, setResults ] = useState([]);
+  //misc.
+  const { socket } = userInfo;
+  const spotify = new spotifyApi();
+  spotify.setAccessToken(userInfo.accessToken);
   
-  const [results, setResults] = useStore('resultsStore');
-  const placeholder = "Add to queue";
+  useEffect( () => {
+    if(text !== ''){
+      spotify.searchTracks(text, {limit : 5})
+      .then( res => {
+        setResults(res);
+      })
+      .catch (err => console.log(err))
+    } else setResults([]);
+    // eslint-disable-next-line
+  }, [text]);
   
-  const handleChange = (e) =>
-  {
-    if (e.target.value !== '')
-    {
-      spotifyApi.searchTracks(e.target.value).then((response) => {
-        setResults(response.tracks.items);
-      } )
-    } else setResults([])
+  const handleAdd = (e, track) => {
+    e.preventDefault();
+    setText('');
+    setResults([]);
+    socket.emit('add-song', { partyName : userInfo.partyName , song : { ...track, votes : 0, status : 'wannabe' }})
   }
-  
-  
-  const inputEl = useRef(null);
-  const handleAdd = () => {
-      inputEl.current.value = '';
-      inputEl.current.focus();
-  }
-  
-  
+
   return (
     <div>
-      <input ref={inputEl} placeholder={placeholder}
-        onChange={handleChange}
-        />
-      {results && <ResultsList added={handleAdd}/>}
-      </div>
-    )
-  }
-  
-  function ResultsList({added})
-  {
-    const [results] = useStore('resultsStore');
-    
-    if (results === [])
-    {
-      return (<span style="display:none"></span>);
-    }
-    
-    const handleAdd = () => added()
-    return (
-      <ul className="add-to-queue__search-results">
-      <style >{`
-        li:hover {
-          background : rgb(87, 181, 96);
-        }
-        .add-to-queue__search-results {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-        }
-        .add-to-queue__search-results-item {
-          padding: 5px 0 5px 5px;
-        }
-        .add-to-queue__search-results-item--focused {
-          background-color: #eee;
-        }
-        .container{
-          display: flex;
-        }
-        .album-img{
-          width: 64;
-            padding-right: 1em;
+      <input type="text" placeholder="Add a song" onChange={(e) => setText(e.target.value)} value={text}/>
+      {results.tracks && results.tracks.items && 
+        <ul>
+          {
+            results.tracks.items.map((track) => 
+            {
+              return <li key={track.id} onClick={(e) => handleAdd(e, track)}>
+                {track.name}
+                <img style={{height : '40px'}} src={track.album.images[0].url} alt="album"/>
+              </li>
+            })
           }
-          .flex-item{
-            flex-grow: 1;
-          }
-
-          .song-name {
-            font-size: 1.3em;
-          // margin-bottom: 0.3em;
-        }
-        `}</style>
-      {results.map((r, index) => {
-        return <Result key={index} track={r} added={handleAdd}/>
-      })}
-    </ul>
-  );
-}
-
-function Result({track, added}) {
-  const socket = io('http://localhost:8888/');
-  const [ appStore, setStore ] = useStore('appStore');
-  const [ results, setResults ] = useStore('resultsStore');
-  const [ party ] = useStore('appStore2');
-  const [ playlist ] = useStore('playlist');
-  const song = {
-    id: track.id,
-    name: track.name,
-    artists: track.artists.map( (artist) => artist.name),
-    images: track.album.images.map( (image) => image.url),
-    playUrl : track.external_urls.spotify,
-    votes: 0,
-  }
-  const spotifyApi = new Spotify();
-  
-  const handleAdd = (e) =>
-  {
-    setStore({...appStore, queue : [...appStore.queue, song], hasQueue : true });
-    setResults([]);
-    added();
-    spotifyApi.addTracksToPlaylist(playlist.id, [track.uri])
-      .then( (err, res) => {
-        err?console.log(err):console.log(res)
-      });
-
-    socket.emit('add-song', party);
-  }
-
-  return (
-    <li onClick={handleAdd}>
-      <div className="container">
-        <div className="album-img">
-          <img src={track.album.images[2].url}/>
-        </div>
-        <div className="flex-item">
-          <div className="song-name">{track.name}</div>
-          <div>{track.artists[0].name}</div>
-        </div>
-      </div>
-    </li>
+        </ul>
+      }
+    </div>
   )
 }
-
-export default AddToQueue;

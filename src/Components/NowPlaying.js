@@ -1,46 +1,37 @@
-import React, { useEffect } from 'react';
-import { useStore } from 'react-hookstore';
-import Spotify from 'spotify-web-api-js';
+import React, { useState, useEffect} from 'react'
+import { useStore } from 'react-hookstore'
 
-export default function NowPlaying() {
-    const [ appStore, setStore] = useStore('appStore');
+const NowPlaying = () => {
+  const [ userInfo ] = useStore('userInfo')
+  const { socket } = userInfo;
+  const [ position, setPosition ] = useState(0)
+  const [ track, setTrack ] = useState(undefined)
 
-    const spotifyApi = new Spotify();
-    spotifyApi.setAccessToken(appStore.accessToken);
+  if(track){
+    setInterval( () => {
+      setPosition(position+1);
+    }, 1000)
+  }
 
-    const playTrack = () => {
-        spotifyApi.transferMyPlayback([appStore.deviceId]) // this needs to be put in createPage.js
-        .then( (err, res) => err ? console.log(err) : console.log(res))
-        spotifyApi.play()
-        .then( (err, res) => err ? console.log(err) : console.log(res))
-    }
-    
-    useEffect( () => {
-        setStore({
-            ...appStore, 
-            nowPlaying : { 
-                ...appStore.queue[0], 
-                image: appStore.hasQueue && appStore.queue[0].images[0], 
-                isPlaying : true,
-                artist : appStore.hasQueue && appStore.queue[0].artists
-            }
-        })
-    }, [appStore.queue])
-
-    return (
-        <div className="NowPlaying">
-            {appStore.hasQueue ?
-            <div>
-                <img src={appStore.nowPlaying.image.toString()} alt="Track Image"/>
-                    <div>
-                        {appStore.nowPlaying.name}
-                        <br/>
-                        {"by "}{Array.from(appStore.nowPlaying.artist).join(', ')}
-                    </div>
-                <button onClick={() => playTrack()}>Play</button>
-                <a href={appStore.nowPlaying.playUrl} target="_blank"><button>Go to Spotify</button></a>
-            </div>    
-            : <div></div>}
-        </div>
-    )
+  useEffect(() => {
+    socket.emit('now-playing', userInfo.partyName)
+    console.log('tick');
+    socket.on('now-playing', res => {
+      setTrack(res.body.item);
+      let sec = Math.floor(res.body.progress_ms / 1000);
+      setPosition(sec);
+    }); 
+  }, [socket])
+   
+  return (
+    <>
+      {(track!==undefined)?(<div>
+        <img style={{height: '100px'}} src={track.album.images[0].url} alt="Album cover"/>
+        {track.name} {track.artists.map( a => a.name).join(',')}
+        {Math.floor(position / 60)} : {position % 60}
+      </div>):''}
+    </>
+  )
 }
+
+export default NowPlaying;
