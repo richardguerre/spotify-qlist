@@ -311,6 +311,81 @@ let publicToken;
   });
 }
 
+let refreshNextPlaying;
+const getNextPlaying = (partyName, time) => {
+  console.log(`getting nextPlaying for party ${partyName} in ${time}ms`)
+  refreshNextPlaying = setTimeout( () => {
+    console.log(`getNowPlaying for party ${partyName}`)
+    spotifyApi.getMyCurrentPlayingTrack()
+      .then( (res) => {
+        let changes = false;
+        parties[partyName].queue.filter( (song) => {
+          if(song.status === 'nowPlaying' && song.id !== res.body.item.id){
+            console.log(`song ${song.name} hasbeen`);
+            song.status = 'hasbeen';
+            changes = true;
+          }
+          if(song.id === res.body.item.id){
+            console.log(`song ${song.name} is now playing on spotify`);
+            song.status = 'nowPlaying';
+            song.votes = 0;
+            song.progress = res.body.progress_ms;
+            changes = true;
+            return true;
+          }
+        })
+        if(changes){
+          changes = false;
+          io.to(partyName).emit('update', parties[partyName].queue)
+          console.log('sent updated queue')
+          if(parties[partyName].queue.length >= 1)
+            getNextPlaying(partyName, res.body.item.duration_ms-res.body.progress_ms+100)
+        }
+      }).catch( (err) => console.log(err))
+  }, time)
+}
+
+const getNowPlaying = (partyName) => {
+  console.log(`getNowPlaying for party ${partyName}`)
+  spotifyApi.setAccessToken(parties[partyName].accessToken)
+  const getCurrent = () => {
+    spotifyApi.getMyCurrentPlayingTrack()
+      .then( (res) => {
+        let changes = false;
+        parties[partyName].queue.filter( (song) => {
+          if(song.status === 'nowPlaying' && song.id !== res.body.item.id){
+            console.log(`song ${song.name} hasbeen`);
+            song.status = 'hasbeen';
+            changes = true;
+          }
+          if(song.id === res.body.item.id){
+            console.log(`song ${song.name} is now playing on spotify`);
+            song.status = 'nowPlaying';
+            song.votes = 0;
+            song.progress = res.body.progress_ms;
+            changes = true;
+            return true;
+          }
+        })
+        if(changes){
+          io.to(partyName).emit('update', parties[partyName].queue)
+          console.log('sent updated queue');
+          changes = false;
+          clearInterval(refreshNowPlaying);
+          console.log(res.body)
+          if(parties[partyName].queue.length >= 1)
+            getNextPlaying(partyName, res.body.item.duration_ms-res.body.progress_ms+100);
+        }
+      }).catch( (err) => console.log(err))
+  }
+  let refreshNowPlaying;
+  if(parties[partyName].queue.length > 1){
+    getCurrent();
+  } else {
+    refreshNowPlaying = setInterval(getCurrent, 5000)
+  }
+}
+
 app.post('/api/create', (req, res) => {
   if(!parties[req.body.partyName]){
     spotifyApi.setAccessToken(req.body.privateToken);
@@ -335,42 +410,9 @@ app.post('/api/create', (req, res) => {
       }).catch( (err) => console.log('could not getMe', err))
   } else {
     console.log(`party "${req.body.partyName}" already exists`)
-    res.err()
+    // res.err()
   }
 })
-
-//retrieve now playing in each party every 15s
-setInterval( () => {//retrieve now playing in each party every 15s
-  console.log('retrieving now playing')
-  const partyNames = Object.keys(parties)
-  partyNames.forEach( (partyName) => {
-    spotifyApi.setAccessToken(parties[partyName].accessToken);
-    spotifyApi.getMyCurrentPlayingTrack()
-      .then( (res) => {
-        // console.log(res, partyName)
-        let changes = false;
-        parties[partyName].queue.filter( (song) => {
-          if(song.status === 'nowPlaying' && song.id !== res.body.item.id){
-            song.status = 'hasbeen';
-            song.votes = 0;
-            console.log(`song ${song.name} hasbeen`)
-            return true;
-          }
-          if(song.id === res.body.item.id){
-            song.status = 'nowPlaying'
-            console.log(`song ${song.name} is now playing on spotify`)
-            changes = true;
-            return true;
-          }
-        })
-        if(changes){
-          console.log('sent updated queue')
-          changes = false;
-          io.to(partyName).emit('update', parties[partyName].queue)
-        }
-      }).catch( err => console.log(err));
-  })
-}, 15000)
 
 io.on('connection', (socket) => {
   console.log(`user ${socket.id} connected`);
@@ -393,6 +435,9 @@ io.on('connection', (socket) => {
       spotifyApi.addTracksToPlaylist(parties[obj.partyName].playlistId, [obj.song.uri])
         .then( (res) => {
           console.log('spotifyApi response =', res);
+          if(parties[obj.partyName].queue.length === 0){
+            getNowPlaying(obj.partyName);
+          }
           parties[obj.partyName].queue.push(obj.song);
           console.log(parties[obj.partyName].queue)
           io.to(obj.partyName).emit('update', parties[obj.partyName].queue)
@@ -434,6 +479,11 @@ io.on('connection', (socket) => {
     
     console.log(`added vote on song ${obj.song.name} in party ${obj.partyName}`);
     io.to(obj.partyName).emit('update', parties[obj.partyName].queue)
+  })
+
+  socket.on('refresh', (obj) => {
+    clearTimeout(refreshNextPlaying);
+    getNowPlaying(obj.partyName)
   })
 
   socket.on('disconnect', () => console.log(`user ${socket.id} disconnected`))

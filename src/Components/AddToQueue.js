@@ -16,10 +16,9 @@ export default function AddToQueue() {
   useEffect( () => {
     if(text !== ''){
       spotify.searchTracks(text, {limit : 5})
-      .then( res => {
+      .then( (res) => {
         setResults(res);
-      })
-      .catch (err => console.log(err))
+      }).catch( (err) => console.log(err))
     } else setResults([]);
     // eslint-disable-next-line
   }, [text]);
