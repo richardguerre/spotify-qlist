@@ -81,9 +81,9 @@ export default function CreatePage() {
 				{partyName && 
 					<>
 						<h5>Share your party</h5>
-						<img src={`https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=http://localhost:3000/party/${partyName}&choe=UTF-8`} alt="qList QR code"/>
+						<img src={`https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=https://qlist.herokuapp.com/party/${partyName}&choe=UTF-8`} alt="qList QR code" download={`qList - ${partyName}`}/>
 						<br/>
-						<a href={`https://chart.googleapis.com/chart?cht=qr&chs=400x400&chl=http://localhost:3000/party/${partyName}&choe=UTF-8`} download={`qList - ${partyName}`}>Download QR code</a>
+						<a href={`https://chart.googleapis.com/chart?cht=qr&chs=400x400&chl=https://qlist.herokuapp.com/party/${partyName}&choe=UTF-8`} download={`qList - ${partyName}`}>Download QR code</a>
 					</>}
 			</div>
 		</>
