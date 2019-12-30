@@ -1,10 +1,10 @@
 //import libraries
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useStore } from "react-hookstore";
 //import components
 import AddToQueue from "../Components/AddToQueue";
-// import NowPlaying from '../Components/NowPlaying';
+import NowPlaying from '../Components/NowPlaying';
 //import misc.
 
 export default function QueuePage() {
@@ -12,33 +12,41 @@ export default function QueuePage() {
   const [userInfo, setUser] = useStore("userInfo");
   const { socket } = userInfo;
   const [queue, setQueue] = useStore("queue");
-  const [ hasbeen, setHasbeen ] = useState([])
+  // eslint-disable-next-line
+  const [nowPlaying, setNow] = useStore("nowPlaying");
+  const [hasbeen, setHasbeen] = useStore("hasbeen");
   //Misc.
   const { partyName } = useParams();
 
   useEffect(() => {
     socket.emit("join-party", partyName);
-    socket.on("join-party", response => {
+    socket.on("join-party", res => {
       //party may not exist
-      console.log(response);
-      if (response === "party not found") {
+      console.log(res);
+      if (res === "party not found") {
         window.location.href = "/not-found";
       } else {
         setUser({
           ...userInfo,
-          accessToken: response.accessToken,
+          accessToken: res.accessToken,
           partyName: partyName
         });
-        setQueue(response.party);
+        const nowPlayingIndex = res.party.findIndex(song => {
+          return song.status === "nowPlaying";
+        });
+        setQueue(res.party.slice(nowPlayingIndex+1, queue.length));
+        setNow(res.party[nowPlayingIndex]);
+        setHasbeen(res.party.slice(0, nowPlayingIndex))
       }
     });
     socket.on("update", queue => {
       console.log("received update", queue);
-      const nowPlayingIndex = queue.findIndex( (song) => {
-        return song.status === "nowPlaying"
-      })
-      setHasbeen(queue.slice(0, nowPlayingIndex)); 
-      setQueue(queue.slice(nowPlayingIndex, queue.length));
+      const nowPlayingIndex = queue.findIndex(song => {
+        return song.status === "nowPlaying";
+      });
+      setQueue(queue.slice(nowPlayingIndex + 1, queue.length));
+      setNow(queue[nowPlayingIndex]);
+      setHasbeen(queue.slice(0, nowPlayingIndex));
     });
     // eslint-disable-next-line
   }, [socket, partyName, setQueue, setUser]);
@@ -52,6 +60,7 @@ export default function QueuePage() {
     return (
       <>
         <h1>{userInfo.partyName}</h1>
+        <NowPlaying />
         <AddToQueue />
         <ul>
           {queue.map(song => {
@@ -85,19 +94,14 @@ export default function QueuePage() {
                     src={song.album.images[0].url}
                     alt="Album cover"
                   />
-                  {" " + song.name + " " + song.votes + " "}
-                  {song.status === "nowPlaying" ? (
-                    "Now Playing"
-                  ) : (
-                    <button onClick={e => handleVote(e, song)}>^</button>
-                  )}
+                  {" " + song.name}
                 </li>
               );
-            } else return <li key="empty"></li>
+            } else return <li key="empty"></li>;
           })}
         </ul>
         <img
-          src={`https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=http://localhost:3000/party/${partyName}&choe=UTF-8`}
+          src={`https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=https://qlist.herokuapp.com/party/${partyName}&choe=UTF-8`}
           alt="qList QR code"
         />
       </>

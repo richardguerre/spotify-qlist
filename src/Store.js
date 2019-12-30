@@ -11,6 +11,6 @@ export default function initStore() {
   });
 
   createStore('queue', [])
-  // createStore('nowPlaying', {})
-  // createStore('recentlyPlayed', [])
+  createStore('nowPlaying', {})
+  createStore('hasbeen', [])
 }
