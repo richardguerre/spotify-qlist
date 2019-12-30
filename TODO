@@ -1,0 +1,16 @@
+- changed <ul><li></li></ul> to table
+- clean up server code
+  - getCurrent() shouldn't be made twice
+- Styling (CSS, Vanilla JS)
+  - Media queries (responsive)
+- DEPLOY to heroku
+
+Extra features
+- if user Is Premium
+  - Select device
+  - Play/Pause
+  - Skip
+- Media queries
+  - npm install react-media
+  - to know if user is on mobile or on desktop
+  - used to decide between showing mobile or desktop instructions (how to play your party)

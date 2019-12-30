@@ -338,7 +338,7 @@ const getNextPlaying = (partyName, time) => {
           changes = false;
           io.to(partyName).emit('update', parties[partyName].queue)
           console.log('sent updated queue')
-          if(parties[partyName].queue.length >= 1)
+          if(parties[partyName].queue.filter( (song) => song.status === 'wannabe').length > 0)
             getNextPlaying(partyName, res.body.item.duration_ms-res.body.progress_ms+100)
         }
       }).catch( (err) => console.log(err))
@@ -373,7 +373,7 @@ const getNowPlaying = (partyName) => {
           changes = false;
           clearInterval(refreshNowPlaying);
           console.log(res.body)
-          if(parties[partyName].queue.length >= 1)
+          if(parties[partyName].queue.filter( (song) => song.status === 'wannabe').length > 0)
             getNextPlaying(partyName, res.body.item.duration_ms-res.body.progress_ms+100);
         }
       }).catch( (err) => console.log(err))
