@@ -1,5 +1,5 @@
 //import libraries
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStore } from 'react-hookstore';
 import spotifyApi from 'spotify-web-api-js';
 import axios from 'axios';
@@ -29,11 +29,20 @@ export default function CreatePage() {
 	const params = getHashParams();
 	const spotify = new spotifyApi();
 	spotify.setAccessToken(params.access_token);
+
+	useEffect(() => {
+		spotify.getMe()
+			.then( (res) => {
+				console.log('user is', res.product)
+				setUser({...userInfo, isPremium : res.product})
+			}).catch( err => console.log(err))
+			// eslint-disable-next-line
+	}, [setUser])
 	
 	//Handle event listeners
 	const handleSubmit = (e) => {
 		e.preventDefault(); //prevents page from reloading
-		axios.post('/api/create', { partyName : partyName, privateToken : params.access_token})
+		axios.post('/api/create', { partyName : partyName, privateToken : params.access_token })
 			.then((res1) => { //{data: {partyName : '...', albumCover : '...'}}
 				console.log(res1)
 				spotify.uploadCustomPlaylistCoverImage(res1.data.playlistId, res1.data.albumCover)

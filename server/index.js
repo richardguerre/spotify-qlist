@@ -323,19 +323,19 @@ app.post('/api/create', (req, res) => {
         })
         .then( (res2) => {
           console.log(res1.body.id, res2.body.id, 'albumCover.albumCover')
-          parties[req.body.partyName] = { accessToken: req.body.privateToken, queue : [], playlistId : res2.body.id };
-          console.log('added party"', req.body.partyName,'"');
+          parties[req.body.partyName] = { accessToken: req.body.privateToken, playlistId : res2.body.id, queue : []};
+          console.log(`added party "${req.body.partyName}"`);
           const response = {
             partyName : req.body.partyName,
             albumCover : albumCover.albumCover,
             playlistId : res2.body.id,
-            isPremium : res1.body.product
           }
           res.send(response);
         }).catch( (err) => console.log('could not createPlaylist', err))
       }).catch( (err) => console.log('could not getMe', err))
   } else {
-    console.log(`party ${req.body.partyName} already exists`)
+    console.log(`party "${req.body.partyName}" already exists`)
+    res.err()
   }
 })
 
@@ -351,7 +351,8 @@ setInterval( () => {//retrieve now playing in each party every 15s
         let changes = false;
         parties[partyName].queue.filter( (song) => {
           if(song.status === 'nowPlaying' && song.id !== res.body.item.id){
-            song.status = 'hasbeen'
+            song.status = 'hasbeen';
+            song.votes = 0;
             console.log(`song ${song.name} hasbeen`)
             return true;
           }
