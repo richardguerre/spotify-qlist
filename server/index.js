@@ -239,16 +239,16 @@ let publicToken;
 
     // your application requests refresh and access tokens
     // after checking the state parameter
-
+    
     var code = req.query.code || null;
     var state = req.query.state || null;
     var storedState = req.cookies ? req.cookies[stateKey] : null;
-
+    
     if (state === null || state !== storedState) {
       res.redirect('/#' +
-        querystring.stringify({
-          error: 'state_mismatch'
-        }));
+      querystring.stringify({
+        error: 'state_mismatch'
+      }));
     } else {
       res.clearCookie(stateKey);
       var authOptions = {
@@ -263,31 +263,31 @@ let publicToken;
         },
         json: true
       };
-
+      
       request.post(authOptions, function(error, response, body) {
         if (!error && response.statusCode === 200) {
-
+          
           var access_token = body.access_token,
-              refresh_token = body.refresh_token;
-
+          refresh_token = body.refresh_token;
+          
           // we can also pass the token to the browser to make requests from there
           res.redirect('http://localhost:3000/create/#' +
-            querystring.stringify({
-              access_token: access_token,
-              refresh_token: refresh_token
-            }));
+          querystring.stringify({
+            access_token: access_token,
+            refresh_token: refresh_token
+          }));
         } else {
           res.redirect('/#' +
-            querystring.stringify({
-              error: 'invalid_token'
-            }));
+          querystring.stringify({
+            error: 'invalid_token'
+          }));
         }
       });
     }
   });
-
+  
   app.get('/refresh_token', function(req, res) {
-
+    
     // requesting access token from refresh token
     var refresh_token = req.query.refresh_token;
     var authOptions = {
@@ -299,7 +299,7 @@ let publicToken;
       },
       json: true
     };
-
+    
     request.post(authOptions, function(error, response, body) {
       if (!error && response.statusCode === 200) {
         var access_token = body.access_token;
@@ -316,6 +316,8 @@ const getNextPlaying = (partyName, time) => {
   console.log(`getting nextPlaying for party ${partyName} in ${time}ms`)
   refreshNextPlaying = setTimeout( () => {
     console.log(`getNowPlaying for party ${partyName}`)
+    console.log(partyName);
+    getCurrent(partyName)
     spotifyApi.getMyCurrentPlayingTrack()
       .then( (res) => {
         let changes = false;
@@ -345,8 +347,10 @@ const getNextPlaying = (partyName, time) => {
   }, time)
 }
 
+
 const getNowPlaying = (partyName) => {
   console.log(`getNowPlaying for party ${partyName}`)
+  console.log(partyName);
   spotifyApi.setAccessToken(parties[partyName].accessToken)
   const getCurrent = () => {
     spotifyApi.getMyCurrentPlayingTrack()
@@ -359,31 +363,31 @@ const getNowPlaying = (partyName) => {
             changes = true;
           }
           if(song.id === res.body.item.id){
-            console.log(`song ${song.name} is now playing on spotify`);
-            song.status = 'nowPlaying';
-            song.votes = 0;
-            song.progress = res.body.progress_ms;
-            changes = true;
-            return true;
-          }
-        })
-        if(changes){
-          io.to(partyName).emit('update', parties[partyName].queue)
-          console.log('sent updated queue');
-          changes = false;
-          clearInterval(refreshNowPlaying);
-          console.log(res.body)
-          if(parties[partyName].queue.filter( (song) => song.status === 'wannabe').length > 0)
-            getNextPlaying(partyName, res.body.item.duration_ms-res.body.progress_ms+100);
-        }
-      }).catch( (err) => console.log(err))
-  }
-  let refreshNowPlaying;
-  if(parties[partyName].queue.length > 1){
-    getCurrent();
-  } else {
-    refreshNowPlaying = setInterval(getCurrent, 5000)
-  }
+              console.log(`song ${song.name} is now playing on spotify`);
+              song.status = 'nowPlaying';
+              song.votes = 0;
+              song.progress = res.body.progress_ms;
+              changes = true;
+              return true;
+            }
+          })
+          if(changes){
+              io.to(partyName).emit('update', parties[partyName].queue)
+              console.log('sent updated queue');
+              changes = false;
+              clearInterval(refreshNowPlaying);
+              console.log(res.body)
+              if(parties[partyName].queue.filter( (song) => song.status === 'wannabe').length > 0)
+                getNextPlaying(partyName, res.body.item.duration_ms-res.body.progress_ms+100);
+            }
+          }).catch( (err) => console.log(err))
+      }
+      let refreshNowPlaying;
+      if(parties[partyName].queue.length > 1){
+        getCurrent(partyName);
+      } else { 
+        refreshNowPlaying = setInterval(getCurrent, 5000)
+      }
 }
 
 app.post('/api/create', (req, res) => {
@@ -436,6 +440,8 @@ io.on('connection', (socket) => {
         .then( (res) => {
           console.log('spotifyApi response =', res);
           if(parties[obj.partyName].queue.length === 0){
+            console.log(parties);
+            console.log(obj.partyName);
             getNowPlaying(obj.partyName);
           }
           parties[obj.partyName].queue.push(obj.song);

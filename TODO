@@ -1,11 +1,12 @@
-- changed <ul><li></li></ul> to table
 - clean up server code
   - getCurrent() shouldn't be made twice
+- changed <ul><li></li></ul> to table
 - Styling (CSS, Vanilla JS)
   - Media queries (responsive)
 - DEPLOY to heroku
 
 Extra features
+- Go to playlist
 - if user Is Premium
   - Select device
   - Play/Pause

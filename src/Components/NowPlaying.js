@@ -2,7 +2,7 @@ import React from "react";
 import { useStore } from "react-hookstore";
 
 function NowPlaying() {
-  const [userInfo] = useStore('userInfo');
+  const [userInfo] = useStore("userInfo");
   const { socket } = userInfo;
   const [nowPlaying] = useStore("nowPlaying");
 
@@ -28,7 +28,11 @@ function NowPlaying() {
       </>
     );
   } else {
-    return <></>;
+    return (
+      <>
+        <button onClick={handleRefresh}>Refresh</button>
+      </>
+    );
   }
 }
 
