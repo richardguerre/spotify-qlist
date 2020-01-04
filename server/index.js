@@ -8,6 +8,7 @@ const cors = require('cors');
 const querystring = require('query-string');
 const cookieParser = require('cookie-parser');
 const spotifyWebApi = require('spotify-web-api-node');
+const path = require('path');
 
 const albumCover = require('./Static/albumCover');
 
@@ -326,6 +327,14 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => console.log(`user ${socket.id} disconnected`))
 })
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('../build'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve('..', 'build', 'index.html'));
+  })
+}
 
 http.listen(8080, (err) => { // server listening...
   if(err) throw err; 
