@@ -1,6 +1,9 @@
 {
   "name": "qlist",
   "version": "0.2.0",
+  "engines": {
+    "node": "12.x"
+  },
   "private": true,
   "dependencies": {
     "axios": "^0.19.0",
@@ -27,7 +30,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:8080/",
+  "proxy": "http://qlist.herokuapp.com/",
   "eslintConfig": {
     "extends": "react-app"
   },
