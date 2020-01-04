@@ -21,6 +21,7 @@ const client_id = process.env.CLIENT;
 const client_secret = process.env.SECRET;
 const redirect_uri = process.env.REDIRECT;
 let publicToken;
+console.log(client_id, client_secret, redirect_uri);
 {//fetching public token for all parties
   const authOptions = {url: 'https://accounts.spotify.com/api/token',headers: {'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64'))},form: {grant_type: 'client_credentials'},json: true};
   request.post(authOptions, function(error, response, body) {

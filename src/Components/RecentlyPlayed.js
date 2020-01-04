@@ -6,24 +6,36 @@ function RecentlyPlayed() {
   
   if (hasbeen.length > 0) {
     return (
-      <div>
+      <div className="RecentlyPlayed">
         <h5>Recently played</h5>
-        <ul>
-          {hasbeen.map(song => {
-            if (song.status === "hasbeen") {
-              return (
-                <li key={song.id}>
-                  <img
-                    style={{ height: "40px" }}
-                    src={song.album.images[0].url}
-                    alt="Album cover"
-                  />
-                  {" " + song.name}
-                </li>
-              );
-            } else return <li key="empty"></li>;
-          })}
-        </ul>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Name</th>
+              <th scope="col">Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            {hasbeen.map(song => {
+              if (song.status === "hasbeen") {
+                return (
+                  <tr key={song.id}>
+                    <td>
+                      <img
+                      style={{ height: "40px" }}
+                      src={song.album.images[0].url}
+                      alt="Album cover"
+                      />
+                    </td>
+                    <td>{song.name}</td>
+                    <td>duration</td>
+                  </tr>
+                );
+              } else return <tr key=""></tr>
+            })}
+          </tbody>
+        </table>
       </div>
     );
   } else {

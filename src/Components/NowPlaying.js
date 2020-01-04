@@ -16,22 +16,23 @@ function NowPlaying() {
     nowPlaying.album.images !== undefined
   ) {
     return (
-      <>
-        <img
-          style={{ height: "110px" }}
-          src={nowPlaying.album.images[0].url}
-          alt="Album cover"
-        />
-        <strong>{nowPlaying.name}</strong>
-        {" by " + nowPlaying.artists[0].name}
+      <div className="NowPlaying">
+        <img src={nowPlaying.album.images[0].url} alt="Album cover" />
+        <div className="song-name">{nowPlaying.name}</div>
+        <div className="artists">
+          {nowPlaying.artists.map(artist => artist.name).join(", ")}
+        </div>
         <button onClick={handleRefresh}>Refresh</button>
-      </>
+      </div>
     );
   } else {
     return (
-      <>
+      <div className="NowPlaying">
+        <img src="/Static/album-cover.png" alt="qList Album Cover" />
+        <div className="song-name">No songs in queue</div>
+        <div className="artists">Please add a song</div>
         <button onClick={handleRefresh}>Refresh</button>
-      </>
+      </div>
     );
   }
 }

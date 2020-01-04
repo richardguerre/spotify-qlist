@@ -2,44 +2,283 @@
   margin: 0;
   padding: 0;
   text-align: center;
-  font-family: Futura;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: black;
+}
+
+p {
+  width: 80%;
+  margin: 0 auto 15px auto;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .App {
-  height: 90vh;
+  background-color: #121212;
+  max-width: 500px;
+  height: 100vh;
+  margin: auto;
 }
 
-nav {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  min-height: 10vh;
-  background: rgb(40, 40, 40);
-  color: white;
+.App .IndexPage img {
+  height: 30vh;
+  margin: auto;
+  display: block;
+  margin-bottom: 10vh;
 }
 
-nav a {
-  Background: rgb(40, 40, 40);
+.App .IndexPage input {
+  border: 1.5px solid #70b269;
+  width: 50%;
+  height: 25px;
+  border-radius: 15px;
+}
+
+.App .IndexPage a {
+  margin: 15px auto;
   color: white;
   text-decoration: none;
+  display: block;
 }
 
-.IndexPage {
-  height: 100%;
-  background: rgb(87,181,96);
+.App .IndexPage a .join {
+  font-size: 30px;
+}
+
+.App .IndexPage .seperator {
+  border: 0.5px solid #70b269;
+  width: 30%;
+  margin: auto;
+}
+
+.App .IndexPage .bottom {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+  position: absolute;
+  bottom: 10px;
+  padding-left: 10px;
+}
+
+.App .CreatePage img {
+  height: 10vh;
+  margin: auto;
+  display: block;
+}
+
+.App .CreatePage h1 {
+  color: white;
+  font-size: 40px;
+  margin: 10px;
+}
+
+.App .CreatePage input[type="text"] {
+  border: 1.5px solid #70b269;
+  width: 30%;
+  height: 25px;
+  border-radius: 15px;
+  margin: 10px;
+}
+
+.App .CreatePage h4 {
+  color: white;
+  font-size: 25px;
+  margin: 10px 0 0 0;
+}
+
+.App .CreatePage .sub-title {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: lighter;
+}
+
+.App .CreatePage .text {
+  color: white;
+  text-align: left;
+  max-width: 50vw;
+  margin: 10px auto;
+}
+
+.App .CreatePage .qrcode {
+  height: 150px;
+}
+
+.App .CreatePage a {
+  margin: 15px auto;
+  color: #70b269;
+  text-decoration: none;
+  display: block;
+}
+
+.App .CreatePage .btn {
+  font-size: 15px;
+  color: white;
+  padding: 10px;
+  border: 1px solid #70b269;
+  border-radius: 25px;
+  background: #121212;
+}
+
+.App .QueuePage {
+  color: #70b269;
+}
+
+.App .QueuePage .qrcode {
+  width: 50%;
+}
+
+.App .QueuePage .NowPlaying {
+  font-size: 20px;
+  color: white;
+  background: #282828;
+  padding: 15px;
+  margin: 10px 0;
+  height: 110px;
+  text-align: left;
+}
+
+.App .QueuePage .NowPlaying img {
+  float: left;
+  margin-right: 10px;
+  height: 110px;
+}
+
+.App .QueuePage .NowPlaying .song-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 10px;
+  text-align: left;
+}
+
+.App .QueuePage .NowPlaying .song-name:hover {
+  white-space: pre-wrap;
+  overflow: visible;
+}
+
+.App .QueuePage .NowPlaying .artists {
+  font-size: 0.8em;
+  margin: 10px;
+  text-align: left;
+}
+
+.App .QueuePage .NowPlaying button {
+  color: white;
+  padding: 2px 5px;
+  border: 1px solid #70b269;
+  border-radius: 25px;
+  background: #282828;
+}
+
+.App .QueuePage .AddToQueue input[type="text"] {
+  border: 1.5px solid #70b269;
+  background: #121212;
+  color: white;
+  width: 40%;
+  height: 25px;
+  border-radius: 15px;
+  margin: 10px;
+}
+
+.App .QueuePage .AddToQueue input[type="text"]:focus {
+  width: 96%;
+}
+
+.App .QueuePage .AddToQueue table {
+  margin: 0 2%;
+  border-bottom: 2px solid #70b269;
+  border-left: 2px solid #70b269;
+  border-right: 2px solid #70b269;
+  width: 96%;
+}
+
+.App .QueuePage .how-to h4 {
+  color: white;
+  font-size: 25px;
+  margin: 10px 0 0 0;
+}
+
+.App .QueuePage .how-to .sub-title {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: lighter;
+}
+
+.App .QueuePage .how-to .text {
+  color: white;
+  text-align: left;
+  max-width: 50vw;
+  margin: 10px auto;
+}
+
+.App .QueuePage .Queue {
   color: white;
 }
-.IndexPage h1 {font-size: 7vh; padding-top: 7vh;}
-.IndexPage h2 {font-size: 8.5vh; margin: 5vh; padding: 3vh; border-bottom-style: solid;}
 
-.NowPlaying {
-  display: flex;
-  color : white;
-  background: rgb(18, 18, 18);
-  padding : 20px 40px;
+.App .QueuePage .Queue table {
+  padding: 0 10px;
+  width: 100%;
 }
 
-.NowPlaying img {
-  max-height: 25vh;
+.App .QueuePage .Queue .upvote {
+  height: 25px;
 }
 
+.App .QueuePage .RecentlyPlayed {
+  color: white;
+}
+
+.App .QueuePage .RecentlyPlayed h5 {
+  font-size: 20px;
+}
+
+.App .QueuePage .RecentlyPlayed table {
+  padding: 0 10px;
+  width: 100%;
+}
+
+.App .QueuePage .RecentlyPlayed .upvote {
+  height: 25px;
+}
+
+.App .NotFoundPage {
+  color: white;
+}
+
+.App .NotFoundPage img {
+  height: 15vh;
+}
+
+.App .NotFoundPage h1 {
+  font-size: 7vh;
+  margin-bottom: 30px;
+}
+
+.App .NotFoundPage p {
+  max-width: 300px;
+  margin: auto;
+  font-size: 2vh;
+  margin-bottom: 30px;
+}
+
+.App .NotFoundPage input {
+  border: 1.5px solid #70b269;
+  width: 50%;
+  height: 3.1vh;
+  border-radius: 15px;
+}
+
+.App .NotFoundPage a {
+  border: 1px solid #70b269;
+  border-radius: 15px;
+  font-size: 3.5vh;
+  margin: 15px auto;
+  max-width: 100px;
+  color: white;
+  text-decoration: none;
+  display: block;
+}
+
+.App .NotFoundPage a:hover {
+  background: #70b269;
+}
+/*# sourceMappingURL=App.css.map */

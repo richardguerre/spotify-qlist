@@ -1,0 +1,261 @@
+$bg: rgb(18, 18, 18);
+$lbg: rgb(40, 40, 40);
+$txt: rgb(255, 255, 255);
+$sbtxt: rgba(255, 255, 255, 0.6);
+$green: rgb(112, 178, 105);
+
+* {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: rgb(0, 0, 0);
+}
+
+p {
+  width: 80%;
+  margin: 0 auto 15px auto;
+  color: $sbtxt;
+}
+
+.App {
+  background-color: $bg;
+  max-width: 500px;
+  height: 100vh;
+  margin: auto;
+
+  .IndexPage {
+    img {
+      height: 30vh;
+      margin: auto;
+      display: block;
+      margin-bottom: 10vh;
+    }
+    input {
+      border: 1.5px solid $green;
+      width: 50%;
+      height: 25px;
+      border-radius: 15px;
+    }
+    a {
+      margin: 15px auto;
+      color: $txt;
+      text-decoration: none;
+      display: block;
+      .join {
+        font-size: 30px;
+      }
+    }
+    // a:hover{
+    //   background: $green;
+    // }
+    .seperator {
+      border: 0.5px solid $green;
+      width: 30%;
+      margin: auto;
+    }
+    .bottom {
+      color: $sbtxt;
+      font-size: 13px;
+      position: absolute;
+      bottom: 10px;
+      padding-left: 10px;
+    }
+  }
+
+  .CreatePage {
+    img {
+      height: 10vh;
+      margin: auto;
+      display: block;
+    }
+    h1 {
+      color: $txt;
+      font-size: 40px;
+      margin: 10px;
+    }
+    input[type="text"] {
+      border: 1.5px solid $green;
+      width: 30%;
+      height: 25px;
+      border-radius: 15px;
+      margin: 10px;
+    }
+    h4 {
+      color: $txt;
+      font-size: 25px;
+      margin: 10px 0 0 0;
+    }
+    .sub-title {
+      color: $sbtxt;
+      font-weight: lighter;
+    }
+    .text {
+      color: $txt;
+      text-align: left;
+      max-width: 50vw;
+      margin: 10px auto;
+    }
+    .qrcode {
+      height: 150px;
+    }
+    a {
+      margin: 15px auto;
+      color: $green;
+      text-decoration: none;
+      display: block;
+    }
+    .btn {
+      font-size: 15px;
+      color: $txt;
+      padding: 10px;
+      border: 1px solid $green;
+      border-radius: 25px;
+      background: $bg;
+    }
+  }
+
+  .QueuePage {
+    color: $green;
+    .qrcode {
+      width: 50%;
+    }
+    .NowPlaying {
+      font-size: 20px;
+      color: $txt;
+      background: $lbg;
+      padding: 15px;
+      margin: 10px 0;
+      height: 110px;
+      text-align: left;
+      img {
+        float: left;
+        margin-right: 10px;
+        height: 110px;
+      }
+      .song-name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin: 10px;
+        text-align: left;
+      }
+      .song-name:hover {
+        white-space: pre-wrap;
+        overflow: visible;
+      }
+      .artists {
+        font-size: 0.8em;
+        margin: 10px;
+        text-align: left;
+      }
+      button {
+        color: $txt;
+        padding: 2px 5px;
+        border: 1px solid $green;
+        border-radius: 25px;
+        background: $lbg;
+      }
+    }
+    .AddToQueue {
+      input[type="text"] {
+        border: 1.5px solid $green;
+        background: $bg;
+        color: $txt;
+        width: 40%;
+        height: 25px;
+        border-radius: 15px;
+        margin: 10px;
+      }
+      input[type="text"]:focus {
+        width: 96%;
+      }
+      table {
+        margin: 0 2%;
+        border-bottom: 2px solid $green;
+        border-left: 2px solid $green;
+        border-right: 2px solid $green;
+        width: 96%;
+      }
+    }
+    .how-to {
+      h4 {
+        color: $txt;
+        font-size: 25px;
+        margin: 10px 0 0 0;
+      }
+      .sub-title {
+        color: $sbtxt;
+        font-weight: lighter;
+      }
+      .text {
+        color: $txt;
+        text-align: left;
+        max-width: 50vw;
+        margin: 10px auto;
+      }
+    }
+    .Queue {
+      color: $txt;
+      table {
+        padding: 0 10px;
+        width: 100%;
+      }
+      .upvote {
+        height: 25px;
+      }
+    }
+    .RecentlyPlayed {
+      color: $txt;
+      h5 {
+        font-size: 20px;
+      }
+      table {
+        padding: 0 10px;
+        width: 100%;
+      }
+      .upvote {
+        height: 25px;
+      }
+    }
+  }
+
+  .NotFoundPage {
+    color: $txt;
+    img {
+      height: 15vh;
+    }
+    h1 {
+      font-size: 7vh;
+      margin-bottom: 30px;
+    }
+    p {
+      max-width: 300px;
+      margin: auto;
+      font-size: 2vh;
+      margin-bottom: 30px;
+    }
+    input {
+      border: 1.5px solid $green;
+      width: 50%;
+      height: 3.1vh;
+      border-radius: 15px;
+    }
+    a {
+      border: 1px solid $green;
+      border-radius: 15px;
+      font-size: 3.5vh;
+      margin: 15px auto;
+      max-width: 100px;
+      color: $txt;
+      text-decoration: none;
+      display: block;
+    }
+    a:hover {
+      background: $green;
+    }
+  }
+}
