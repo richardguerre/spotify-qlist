@@ -327,7 +327,17 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => console.log(`user ${socket.id} disconnected`))
 })
 
-http.listen(8080, (err) => { // server listening...
-  if(err) throw err; 
-  console.log(`Listening on port 8080...`);
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('../build'));
+
+   app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
+  })
+}
+
+const port = process.env.PORT || 8080;
+
+http.listen(port, (err) => { // server listening...
+  if(err) throw err;
+  console.log(`Listening on port ${port}...`);
 });
