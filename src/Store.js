@@ -7,7 +7,7 @@ export default function initStore() {
     partyName : undefined,
     accessToken : undefined,
     isPremium : false,
-    socket : io('http://qlist.herokuapp.com/')
+    socket : io('https://qlist.herokuapp.com/')
   });
 
   createStore('queue', [])

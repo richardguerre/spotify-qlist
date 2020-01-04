@@ -30,7 +30,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://qlist.herokuapp.com/",
+  "proxy": "https://qlist.herokuapp.com/",
   "eslintConfig": {
     "extends": "react-app"
   },
