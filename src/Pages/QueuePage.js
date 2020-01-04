@@ -64,8 +64,8 @@ export default function QueuePage() {
   if (userInfo.partyName && userInfo.accessToken) {
     return (
       <div className="QueuePage">
-        {/* <img src="/Static/icon.png" alt="icon"/> */}
-        <h1>{userInfo.partyName}</h1>
+        <img className="logo" src="/Static/logo.png" alt="logo"/>
+        {/* <h1>{userInfo.partyName}</h1> */}
         <NowPlaying />
         <AddToQueue />
         <div className="Queue">

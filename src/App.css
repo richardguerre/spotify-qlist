@@ -123,27 +123,34 @@ p {
   color: #70b269;
 }
 
+.App .QueuePage .logo {
+  height: 10vh;
+  margin: auto;
+  display: block;
+}
+
 .App .QueuePage .qrcode {
   width: 50%;
 }
 
 .App .QueuePage .NowPlaying {
-  font-size: 20px;
+  font-size: 25px;
   color: white;
   background: #282828;
   padding: 15px;
-  margin: 10px 0;
+  margin: 0 0 10px 0;
   height: 110px;
   text-align: left;
 }
 
 .App .QueuePage .NowPlaying img {
   float: left;
-  margin-right: 10px;
+  margin-right: 20px;
   height: 110px;
 }
 
 .App .QueuePage .NowPlaying .song-name {
+  font-size: 1em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -157,7 +164,7 @@ p {
 }
 
 .App .QueuePage .NowPlaying .artists {
-  font-size: 0.8em;
+  font-size: 0.7em;
   margin: 10px;
   text-align: left;
 }
@@ -224,6 +231,7 @@ p {
 }
 
 .App .QueuePage .RecentlyPlayed {
+  margin-top: 10px;
   color: white;
 }
 
@@ -234,10 +242,6 @@ p {
 .App .QueuePage .RecentlyPlayed table {
   padding: 0 10px;
   width: 100%;
-}
-
-.App .QueuePage .RecentlyPlayed .upvote {
-  height: 25px;
 }
 
 .App .NotFoundPage {

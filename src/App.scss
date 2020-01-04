@@ -120,23 +120,29 @@ p {
 
   .QueuePage {
     color: $green;
+    .logo {
+      height: 10vh;
+      margin: auto;
+      display: block;
+    }
     .qrcode {
       width: 50%;
     }
     .NowPlaying {
-      font-size: 20px;
+      font-size: 25px;
       color: $txt;
       background: $lbg;
       padding: 15px;
-      margin: 10px 0;
+      margin: 0 0 10px 0;
       height: 110px;
       text-align: left;
       img {
         float: left;
-        margin-right: 10px;
+        margin-right: 20px;
         height: 110px;
       }
       .song-name {
+        font-size: 1em;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -148,7 +154,7 @@ p {
         overflow: visible;
       }
       .artists {
-        font-size: 0.8em;
+        font-size: 0.7em;
         margin: 10px;
         text-align: left;
       }
@@ -209,6 +215,7 @@ p {
       }
     }
     .RecentlyPlayed {
+      margin-top: 10px;
       color: $txt;
       h5 {
         font-size: 20px;
@@ -216,9 +223,6 @@ p {
       table {
         padding: 0 10px;
         width: 100%;
-      }
-      .upvote {
-        height: 25px;
       }
     }
   }

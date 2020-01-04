@@ -1,9 +1,9 @@
 import React from "react";
-import { useStore } from 'react-hookstore';
+import { useStore } from "react-hookstore";
 
 function RecentlyPlayed() {
-  const [ hasbeen ] = useStore('hasbeen');
-  
+  const [hasbeen] = useStore("hasbeen");
+
   if (hasbeen.length > 0) {
     return (
       <div className="RecentlyPlayed">
@@ -23,16 +23,20 @@ function RecentlyPlayed() {
                   <tr key={song.id}>
                     <td>
                       <img
-                      style={{ height: "40px" }}
-                      src={song.album.images[0].url}
-                      alt="Album cover"
+                        style={{ height: "40px" }}
+                        src={song.album.images[0].url}
+                        alt="Album cover"
                       />
                     </td>
                     <td>{song.name}</td>
-                    <td>duration</td>
+                    <td>
+                      {Math.floor(song.duration_ms / 1000 / 60) +
+                        ":" +
+                        Math.floor((song.duration_ms / 1000) % 60)}
+                    </td>
                   </tr>
                 );
-              } else return <tr key=""></tr>
+              } else return <tr key=""></tr>;
             })}
           </tbody>
         </table>
