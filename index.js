@@ -153,6 +153,7 @@ const getNextPlaying = (partyName, time) => {
     spotifyApi.getMyCurrentPlayingTrack()
       .then( (res) => {
         let changes = false;
+        if(!res.body){
         parties[partyName].queue.filter( (song) => {
           if(song.status === 'nowPlaying' && song.id !== res.body.item.id){
             console.log(`song ${song.name} hasbeen`);
@@ -175,6 +176,7 @@ const getNextPlaying = (partyName, time) => {
           if(parties[partyName].queue.filter( (song) => song.status === 'wannabe').length > 0)
             getNextPlaying(partyName, res.body.item.duration_ms-res.body.progress_ms+100)
         }
+      }
       }).catch( (err) => console.log(err))
   }, time)
 }
@@ -188,7 +190,8 @@ const getNowPlaying = (partyName) => {
     spotifyApi.getMyCurrentPlayingTrack()
       .then( (res) => {
         let changes = false;
-        parties[partyName].queue.filter( (song) => {
+        if(!res.body){
+          parties[partyName].queue.filter( (song) => {
           if(song.status === 'nowPlaying' && song.id !== res.body.item.id){
             console.log(`song ${song.name} hasbeen`);
             song.status = 'hasbeen';
@@ -212,6 +215,7 @@ const getNowPlaying = (partyName) => {
               if(parties[partyName].queue.filter( (song) => song.status === 'wannabe').length > 0)
                 getNextPlaying(partyName, res.body.item.duration_ms-res.body.progress_ms+100);
             }
+          }
           }).catch( (err) => console.log(err))
       }
       let refreshNowPlaying;
