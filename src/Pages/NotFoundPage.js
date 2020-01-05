@@ -6,7 +6,7 @@ export default function NotFoundPage() {
 
   const handleSubmit = (e) =>{
     e.preventDefault();
-    window.location.href = '/party/'+search;
+    window.location.href = '/#/party/'+search;
   }
 
   return (

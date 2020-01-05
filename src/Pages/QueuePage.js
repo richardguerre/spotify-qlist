@@ -37,7 +37,7 @@ export default function QueuePage() {
       //party may not exist
       console.log(res);
       if (res === "party not found") {
-        window.location.href = "/not-found";
+        window.location.href = "/#/not-found";
       } else {
         setUser({
           ...userInfo,
