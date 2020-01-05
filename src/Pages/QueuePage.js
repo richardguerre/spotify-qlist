@@ -1,6 +1,5 @@
 //import libraries
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { useStore } from "react-hookstore";
 //import components
 import AddToQueue from "../Components/AddToQueue";
@@ -19,7 +18,7 @@ export default function QueuePage() {
   // eslint-disable-next-line
   const [hasbeen, setHasbeen] = useStore("hasbeen");
   //Misc.
-  const { partyName } = useParams();
+  const partyName = window.location.hash.substr(8);
 
   function segQueue(party) {
     const nowPlayingIndex = party.findIndex(
@@ -147,7 +146,7 @@ export default function QueuePage() {
         <RecentlyPlayed />
         <img
           className="qrcode"
-          src={`https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=https://qlist.herokuapp.com/party/${partyName}&choe=UTF-8`}
+          src={`https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=https://qlist.herokuapp.com/#/party/${partyName}&choe=UTF-8`}
           alt="qList QR code"
         />
       </div>
