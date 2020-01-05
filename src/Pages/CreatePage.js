@@ -13,7 +13,7 @@ const getHashParams = () => {
   var hashParams = {};
   var e,
     r = /([^&;=]+)=?([^&;]*)/g,
-    q = window.location.hash.substring(10);
+    q = window.location.hash.substring(9);
   // eslint-disable-next-line
   while ((e = r.exec(q))) {
     hashParams[e[1]] = decodeURIComponent(e[2]);
@@ -28,6 +28,7 @@ export default function CreatePage() {
 
   //other miscellaneous
   const params = getHashParams();
+  console.log(params, params.access_token, params.refresh_token)
   const spotify = new spotifyApi();
   spotify.setAccessToken(params.access_token);
 

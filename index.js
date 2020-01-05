@@ -105,13 +105,13 @@ console.log(client_id, client_secret, redirect_uri);
           refresh_token = body.refresh_token;
           
           // we can also pass the token to the browser to make requests from there
-          res.redirect('http://qlist.herokuapp.com/#/create/#' +
+          res.redirect('http://qlist.herokuapp.com/#/create/' +
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
           }));
         } else {
-          res.redirect('http://qlist.herokuapp.com/#/create/#' +
+          res.redirect('http://qlist.herokuapp.com/#/create/' +
           querystring.stringify({
             error: 'invalid_token'
           }));
