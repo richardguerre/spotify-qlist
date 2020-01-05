@@ -12,7 +12,7 @@ export default function IndexPage() {
       </form>
       <Link to={`/party/${name}`}><div className="join">Join</div></Link>
       <div className="seperator" />
-      <Link to={"/create"}>Create*</Link>
+      <a href={"http://qlist.herokuapp.com/api/login"}>Create*</a>
       <div className="bottom">*Requires a Spotify account</div>
     </div>
   )
