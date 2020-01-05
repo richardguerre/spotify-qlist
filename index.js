@@ -153,7 +153,7 @@ const getNextPlaying = (partyName, time) => {
     spotifyApi.getMyCurrentPlayingTrack()
       .then( (res) => {
         let changes = false;
-        if(!res.body){
+        if(res.body){
         parties[partyName].queue.filter( (song) => {
           if(song.status === 'nowPlaying' && song.id !== res.body.item.id){
             console.log(`song ${song.name} hasbeen`);
@@ -190,7 +190,8 @@ const getNowPlaying = (partyName) => {
     spotifyApi.getMyCurrentPlayingTrack()
       .then( (res) => {
         let changes = false;
-        if(!res.body){
+        console.log(res.body);
+        if(res.body){
           parties[partyName].queue.filter( (song) => {
           if(song.status === 'nowPlaying' && song.id !== res.body.item.id){
             console.log(`song ${song.name} hasbeen`);
