@@ -1,5 +1,5 @@
 import React from 'react';
-import {HashRouter as Router, Switch, Route } from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 // import NavBar from './Components/NavBar';
 import CreatePage from './Pages/CreatePage.js';
@@ -15,7 +15,7 @@ function App() {
 	
 	return (
 		<div className="App">
-			<Router basename="/">
+			<Router>
 				<Switch>
 					<Route path="/" exact component={IndexPage}/>
 					<Route path="/create" component={CreatePage}/>
