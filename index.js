@@ -105,14 +105,16 @@ console.log(client_id, client_secret, redirect_uri);
           refresh_token = body.refresh_token;
           
           // we can also pass the token to the browser to make requests from there
-          res.send({
+          res.redirect('http://qlist.herokuapp.com/#/create/#' +
+          querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
-          })
+          }));
         } else {
-          res.send({
-            error : 'invalid token'
-          })
+          res.redirect('http://qlist.herokuapp.com/#/create/#' +
+          querystring.stringify({
+            error: 'invalid_token'
+          }));
         }
       });
     }
@@ -328,7 +330,7 @@ io.on('connection', (socket) => {
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('build'));
 
-   app.get('/*', (req, res) => {
+   app.get('*', (req, res) => {
     let url = path.join(__dirname, 'build', 'index.html');
     if (!url.startsWith('/app/'))
       url = url.substring(1);
