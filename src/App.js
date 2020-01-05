@@ -15,7 +15,7 @@ function App() {
 	
 	return (
 		<div className="App">
-			<Router>
+			<Router basename="/">
 				<Switch>
 					<Route path="/" exact component={IndexPage}/>
 					<Route path="/create" component={CreatePage}/>
