@@ -30,11 +30,11 @@ export default function QueuePage() {
   }
 
   useEffect(() => {
-    console.log(partyName);
+    // console.log(partyName);
     socket.emit("join-party", partyName);
     socket.on("join-party", res => {
       //party may not exist
-      console.log(res);
+      // console.log(res);
       if (res === "party not found") {
         window.location.href = "/#/not-found";
       } else {
@@ -47,7 +47,7 @@ export default function QueuePage() {
       }
     });
     socket.on("update", queue => {
-      console.log("received update", queue);
+      // console.log("received update", queue);
       segQueue(queue);
     });
     // eslint-disable-next-line

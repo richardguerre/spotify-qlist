@@ -28,7 +28,7 @@ export default function CreatePage() {
 
   //other miscellaneous
   const params = getHashParams();
-  console.log(params, params.access_token, params.refresh_token)
+  // console.log(params, params.access_token, params.refresh_token)
   const spotify = new spotifyApi();
   spotify.setAccessToken(params.access_token);
 
@@ -36,7 +36,7 @@ export default function CreatePage() {
     spotify
       .getMe()
       .then(res => {
-        console.log("user is", res.product);
+        // console.log("user is", res.product);
         setUser({ ...userInfo, isPremium: res.product });
       })
       .catch(err => console.log(err));
@@ -53,18 +53,18 @@ export default function CreatePage() {
       })
       .then(res1 => {
         //{data: {partyName : '...', albumCover : '...'}}
-        console.log(res1);
+        // console.log(res1);
         spotify
           .uploadCustomPlaylistCoverImage(
             res1.data.playlistId,
             res1.data.albumCover
           )
           .then(res2 => {
-            console.log("qList album cover uploaded", res2);
+            // console.log("qList album cover uploaded", res2);
             window.location.href = `/#/party/${partyName}`;
           })
           .catch(err => {
-            console.log("could not uploadCoverImage", err);
+            // console.log("could not uploadCoverImage", err);
             window.location.href = `/#/party/${partyName}`;
           });
 

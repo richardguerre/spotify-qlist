@@ -63,7 +63,7 @@ export default function AddToQueue() {
                     />
                   </td>
                   <td>{track.name}</td>
-                  <td>{track.artists.map(artist => artist.name).join(",")}</td>
+                  <td>{track.artists.map(artist => artist.name).join(", ")}</td>
                 </tr>
               );
             })}
